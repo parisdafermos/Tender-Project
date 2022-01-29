@@ -4,11 +4,11 @@ import Card from "../UI/Card";
 import Item from "./Item/Item";
 
 export default function AvailableItems() {
-  const [meals, setMeals] = useState([]);
+  const [items, setItems] = useState([]);
   const [isLoading, setIsloading] = useState(true);
   const [httpError, setHttpError] = useState();
   useEffect(() => {
-    const fetchMeals = async () => {
+    const fetchItems = async () => {
       const response = await fetch(
         "https://tender-project-90a6d-default-rtdb.europe-west1.firebasedatabase.app/items.json"
       );
@@ -18,10 +18,9 @@ export default function AvailableItems() {
       }
 
       const responseData = await response.json();
-
-      const loadedMeals = [];
+      const loadedItems = [];
       for (const key in responseData) {
-        loadedMeals.push({
+        loadedItems.push({
           id: key,
           name: responseData[key].name,
           description: responseData[key].description,
@@ -30,11 +29,11 @@ export default function AvailableItems() {
         });
       }
 
-      setMeals(loadedMeals);
+      setItems(loadedItems);
       setIsloading(false);
     };
 
-    fetchMeals().catch((error) => {
+    fetchItems().catch((error) => {
       setIsloading(false);
       setHttpError(error.message);
     });
@@ -42,33 +41,33 @@ export default function AvailableItems() {
 
   if (isLoading) {
     return (
-      <section className={classes.MealsLoading}>
+      <section className={classes.ItemsLoading}>
         <p> Loading...</p>
       </section>
     );
   }
   if (httpError) {
     return (
-      <section className={classes.MealsError}>
+      <section className={classes.ItemsError}>
         <p>{httpError}</p>
       </section>
     );
   }
-  const mealsList = meals.map((meal) => (
+  const itemsList = items.map((item) => (
     <Item
-      id={meal.id}
-      key={meal.id}
-      name={meal.name}
-      description={meal.description}
-      price={meal.price}
-      quantity={meal.quantity}
+      id={item.id}
+      key={item.id}
+      name={item.name}
+      description={item.description}
+      price={item.price}
+      quantity={item.quantity}
     />
   ));
   return (
-    <section className={classes.meals}>
+    <section className={classes.items}>
       <Card>
         {" "}
-        <ul>{mealsList} </ul>
+        <ul>{itemsList} </ul>
       </Card>
     </section>
   );

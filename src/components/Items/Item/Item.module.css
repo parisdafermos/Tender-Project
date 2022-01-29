@@ -1,4 +1,4 @@
-.meal {
+.item {
   display: flex;
   justify-content: space-between;
   margin: 1rem;
@@ -6,7 +6,7 @@
   border-bottom: 1px solid #ccc;
 }
 
-.meal h3 {
+.item h3 {
   margin: 0 0 0.25rem 0;
 }
 
@@ -20,7 +20,7 @@
   color: #005f73;
   font-size: 1.25rem;
 }
-.meal {
+.item {
   display: flex;
   justify-content: space-between;
   margin: 1rem;
@@ -28,7 +28,7 @@
   border-bottom: 1px solid #ccc;
 }
 
-.meal h3 {
+.item h3 {
   margin: 0 0 0.25rem 0;
 }
 

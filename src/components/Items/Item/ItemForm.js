@@ -15,7 +15,7 @@ export default function ItemForm(props) {
     if (
       enteredAmount.trim().length === 0 ||
       enteredAmountNumber < 1 ||
-      enteredAmountNumber > 5
+      enteredAmountNumber > props.quantity
     ) {
       setAmountIsValid(false);
       return;
@@ -23,7 +23,7 @@ export default function ItemForm(props) {
 
     props.onAddToCart(enteredAmountNumber);
   };
-
+  console.log(props);
   return (
     <form className={classes.form} onSubmit={submitHandler}>
       <Input
@@ -33,7 +33,7 @@ export default function ItemForm(props) {
           id: "amount_" + props.id,
           type: "number",
           min: "1",
-          max: "5",
+          max: props.quantity,
           step: "1",
           defaultValue: "1",
         }}

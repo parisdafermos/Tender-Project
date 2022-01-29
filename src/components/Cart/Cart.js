@@ -22,8 +22,41 @@ export default function Cart(props) {
   const orderHandler = () => {
     setIsCheckout(true);
   };
+  const getProducts = async () => {
+    const products = await fetch(
+      `https://tender-project-90a6d-default-rtdb.europe-west1.firebasedatabase.app/items.json`
+    );
+    return await products.json();
+  };
+  const productAvailable = async (productsList) => {
+    const products = await getProducts();
 
+    const unavailableItems = productsList.filter(
+      (product) => product.amount >= products[product.id].quantity
+    );
+
+    return unavailableItems.length === 0; // returns true if there are no unavailable items
+  };
+  const updateItems = async (productsList) => {
+    const products = await getProducts();
+    productsList.forEach((product) => {
+      fetch(
+        `https://tender-project-90a6d-default-rtdb.europe-west1.firebasedatabase.app/items/${product.id}/.json`,
+        {
+          method: "PATCH",
+          body: JSON.stringify({
+            quantity: products[product.id].quantity - product.amount,
+          }),
+        }
+      );
+    });
+  };
   const submitOrderHandler = async (userData) => {
+    const itemsAreAvailable = await productAvailable(cartCtx.items);
+    if (!itemsAreAvailable) {
+      return;
+    }
+
     setIsSubmitting(true);
     await fetch(
       "https://tender-project-90a6d-default-rtdb.europe-west1.firebasedatabase.app/orders.json",
@@ -32,12 +65,15 @@ export default function Cart(props) {
         body: JSON.stringify({
           user: userData,
           orderedItems: cartCtx.items,
+          quantity: cartCtx.quantity,
         }),
       }
     );
+    updateItems(cartCtx.items);
     setIsSubmitting(false);
     setDidSubmit(true);
     cartCtx.clearCart();
+    window.location.reload(false);
   };
 
   const cartItems = (

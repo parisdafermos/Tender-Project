@@ -1,17 +1,17 @@
-.meals {
+.items {
   max-width: 60rem;
   width: 90%;
   margin: 2rem auto;
-  animation: meals-appear 1s ease-out forwards;
+  animation: items-appear 1s ease-out forwards;
 }
 
-.meals ul {
+.items ul {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-@keyframes meals-appear {
+@keyframes items-appear {
   from {
     opacity: 0;
     transform: translateY(3rem);
@@ -23,12 +23,12 @@
   }
 }
 
-.MealsLoading {
+.ItemsLoading {
   text-align: center;
   color: white;
 }
 
-.MealsError {
+.ItemsError {
   text-align: center;
   color: red;
 }
