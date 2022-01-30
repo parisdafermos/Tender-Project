@@ -35,3 +35,22 @@
 .description {
   font-style: italic;
 }
+
+.button {
+  font: inherit;
+  cursor: pointer;
+  background-color: #0a9396;
+  border: 1px solid #0a9396;
+  color: white;
+  /* padding: 0.25rem 2rem; */
+  border-radius: 20px;
+  font-weight: bold;
+  width: 40px;
+  height: 40px;
+  margin: 0 0.5rem;
+}
+
+.button.remove {
+  background-color: rgb(219, 43, 43);
+  border: 1px solid rgb(219, 43, 43);
+}

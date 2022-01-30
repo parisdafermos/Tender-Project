@@ -3,9 +3,10 @@ import classes from "./Item.module.css";
 import ItemForm from "./ItemForm";
 import { useContext } from "react";
 import CartContext from "../../../store/cart-context";
-export default function Item(props) {
+function Item(props) {
   const cartCtx = useContext(CartContext);
   const price = `$${props.price.toFixed(2)}`; //makes sure output has 2 decimals
+  const isAdmin = true;
 
   const addToCartHandler = (amount) => {
     cartCtx.addItem({
@@ -24,7 +25,24 @@ export default function Item(props) {
         <div className={classes.description}>{props.description}</div>
         <div className={classes.price}>{price}</div>
         <div className={classes.price}>
-          Available Quantity: {props.quantity}
+          Available Quantity:{" "}
+          {isAdmin && (
+            <button
+              className={`${classes.button} ${classes.remove}`}
+              onClick={() => props.updateQuantity(props.id, props.quantity, -1)}
+            >
+              -
+            </button>
+          )}
+          {props.quantity}
+          {isAdmin && (
+            <button
+              className={classes.button}
+              onClick={() => props.updateQuantity(props.id, props.quantity, 1)}
+            >
+              +
+            </button>
+          )}
         </div>
       </div>
       <div>
@@ -37,3 +55,5 @@ export default function Item(props) {
     </li>
   );
 }
+
+export default Item;
