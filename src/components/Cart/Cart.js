@@ -39,8 +39,8 @@ export default function Cart(props) {
   };
   const updateItems = async (productsList) => {
     const products = await getProducts();
-    productsList.forEach((product) => {
-      fetch(
+    const productPromises = productsList.map((product) => {
+      return fetch(
         `https://tender-project-90a6d-default-rtdb.europe-west1.firebasedatabase.app/items/${product.id}/.json`,
         {
           method: "PATCH",
@@ -50,6 +50,8 @@ export default function Cart(props) {
         }
       );
     });
+    await Promise.all(productPromises);
+    return true; // just so it returns something
   };
   const submitOrderHandler = async (userData) => {
     const itemsAreAvailable = await productAvailable(cartCtx.items);
@@ -69,7 +71,7 @@ export default function Cart(props) {
         }),
       }
     );
-    updateItems(cartCtx.items);
+    await updateItems(cartCtx.items);
     setIsSubmitting(false);
     setDidSubmit(true);
     cartCtx.clearCart();
