@@ -7,6 +7,22 @@ export default function AvailableItems() {
   const [items, setItems] = useState([]);
   const [isLoading, setIsloading] = useState(true);
   const [httpError, setHttpError] = useState();
+  const updateQuantity = async (itemId, quantity, modifier) => {
+    const newQuantity = quantity + modifier;
+    await fetch(
+      `https://tender-project-90a6d-default-rtdb.europe-west1.firebasedatabase.app/items/${itemId}/.json`,
+      {
+        method: "PATCH",
+        body: JSON.stringify({
+          quantity: newQuantity,
+        }),
+      }
+    );
+    const updatedItems = items.map((item) =>
+      item.id === itemId ? { ...item, quantity: newQuantity } : item
+    );
+    setItems(updatedItems);
+  };
   useEffect(() => {
     const fetchItems = async () => {
       const response = await fetch(
@@ -55,6 +71,7 @@ export default function AvailableItems() {
   }
   const itemsList = items.map((item) => (
     <Item
+      updateQuantity={updateQuantity}
       id={item.id}
       key={item.id}
       name={item.name}
